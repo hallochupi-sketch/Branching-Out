@@ -1,21 +1,15 @@
-import json
-
-
-def filter_users_by_name(name):
-    with open("users.json", "r") as file:
-        users = json.load(file)
-
-    filtered_users = [user for user in users if user["name"].lower() == name.lower()]
-
-    for user in filtered_users:
-        print(user)
-
-
-if __name__ == "__main__":
-    filter_option = input("What would you like to filter by? (Currently, only 'name' is supported): ").strip().lower()
-
-    if filter_option == "name":
-        name_to_search = input("Enter a name to filter users: ").strip()
-        filter_users_by_name(name_to_search)
+def filter_by_age(users, min_age=None, max_age=None):
+    """
+    Return users whose age is within the given bounds.
+    If only min_age is given, filter users with age >= min_age.
+    If only max_age is given, filter users with age <= max_age.
+    If both are given, filter min_age <= age <= max_age.
+    """
+    if min_age is not None and max_age is not None:
+        return [u for u in users if min_age <= u.get("age", 0) <= max_age]
+    elif min_age is not None:
+        return [u for u in users if u.get("age", 0) >= min_age]
+    elif max_age is not None:
+        return [u for u in users if u.get("age", 0) <= max_age]
     else:
-        print("Filtering by that option is not yet supported.")
+        return users
